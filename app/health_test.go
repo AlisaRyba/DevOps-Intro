@@ -35,7 +35,7 @@ func TestHealthHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if response["status"] != "broken" {
-    	t.Errorf("expected status 'broken', got '%v'", response["status"])
+	if response["status"] != "ok" {
+    	t.Errorf("expected status 'ok', got '%v'", response["status"])
 	}
 }
