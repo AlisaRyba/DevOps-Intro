@@ -65,7 +65,7 @@ jobs:
           go-version: "1.23"
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277c7f2f8b47b # v5.3.0
+        uses: golangci/golangci-lint-action@v5.3.0
         with:
           version: v2.5.0
           working-directory: ./app
