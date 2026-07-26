@@ -156,3 +156,13 @@ For our lab, `fail-fast: false` helps us see if the test passes on Go 1.23 but f
 2. **Cache restore keys:** Actions can restrict which cache entries can be restored, preventing cross-branch cache poisoning.
 3. **Write permissions:** GitHub Actions requires write permissions to create cache entries, which is controlled by the `permissions:` setting.
 4. **GitHub's official docs:** "Caches are scoped to a branch and are isolated between branches. This means that a cache created in a pull request will not be available in the main branch."
+
+## Bonus Task — Pipeline Performance Investigation
+
+### B.4: Bottleneck Analysis
+
+The single step that dominates the remaining time is **runner provisioning and Go toolchain download** (~20-25s). This is the time taken by GitHub to allocate a runner and download the Go binary from the internet — infrastructure that we cannot control.
+
+To make it shorter, we would need to change QuickNotes itself by **adding external dependencies**. With zero dependencies, `go mod download` does nothing, so the cache optimization has minimal effect. If QuickNotes used a large framework like `gin`, `gorilla/mux`, or `gRPC`, the module cache would save 15-30s per run.
+
+My team would stop optimizing at **≤ 60s wall-clock**. Beyond this point, the effort-to-benefit ratio becomes unfavorable. The remaining time is dominated by infrastructure that we cannot control (runner provisioning, Go download), and further optimizations would require architectural changes to the application itself or moving to self-hosted runners — which are outside the scope of this lab and would add significant maintenance overhead.
