@@ -295,7 +295,7 @@ After pushing the branch to GitHub, the signed commit should display the `Verifi
 Screenshot:
 
 ```text
-[INSERT SCREENSHOT OF THE VERIFIED BADGE HERE]
+![Verified commit](images/lab1-1.png)
 ```
 
 The `Verified` badge demonstrates that GitHub was able to verify the cryptographic signature associated with the commit.
@@ -310,13 +310,113 @@ Signed commits make it possible to cryptographically verify that a commit was cr
 
 ## Task 2 — Pull Request Template
 
-To be completed.
+### 1. Pull Request Template
+
+A Pull Request template was created at:
+
+```text
+.github/pull_request_template.md
+```
+
+The template contains the following sections:
+
+- `Goal` — describes the purpose of the Pull Request;
+- `Changes` — lists the changes introduced by the PR;
+- `Testing` — explains how the changes were verified;
+- `Checklist` — provides a final self-check before submitting the PR.
+
+The contents of the template were verified with:
+
+```bash
+cat .github/pull_request_template.md
+```
+
+Output:
+
+```text
+## Goal
+<!-- What does this PR accomplish? 1 sentence. -->
+
+## Changes
+-
+
+## Testing
+<!-- How did you verify it? -->
+
+## Checklist
+- [ ] Title is a clear sentence (≤ 70 chars)
+- [ ] Commits are signed (`git log --show-signature`)
+- [ ] `submissions/labN.md` updated
+```
+
+The Pull Request template helps standardize PR descriptions and makes code review easier because reviewers can immediately see the purpose of the change, what was modified, and how the changes were tested.
+
+### 2. Template Commit
+
+The template was committed to the `main` branch of my fork and pushed to GitHub.
+
+The commit was SSH-signed in the same way as the Lab 1 submission commits.
+
+To verify the signature locally, the following command can be used:
+
+```bash
+git log --show-signature -1
+```
+
+The expected result contains:
+
+```text
+Good "git" signature
+```
+
+### 3. Pull Request
+
+After completing the laboratory work, the Pull Request is created from:
+
+```text
+AlisaRyba:feature/lab1
+```
+
+to:
+
+```text
+inno-devops-labs:main
+```
+
+The PR description should use the structure defined in the Pull Request template:
+
+- Goal
+- Changes
+- Testing
+- Checklist
+
+The checklist is completed before submission to confirm that the title is clear, the commits are signed, and the Lab 1 submission file has been updated.
+
+```text
+alisaevdosenko@MacBook-Pro-Alisa DevOps-Intro % git log --show-signature --oneline -5
+b00d7e8 (HEAD -> feature/lab1, origin/feature/lab1) Good "git" signature for evdosenko.dds@gmail.com with ED25519 key SHA256:Q7ijWjKndttr1JGzwLbdqqHIBHBt92SVt6n1rI2AxEA
+docs(lab1): document task 1
+4886dbd Good "git" signature for evdosenko.dds@gmail.com with ED25519 key SHA256:Q7ijWjKndttr1JGzwLbdqqHIBHBt92SVt6n1rI2AxEA
+docs(lab1): start submission
+bad2887 (upstream/main, upstream/HEAD) Good "git" signature with ED25519 key SHA256:0cwLoNGahihJuXWFSCl5sAOX6EvXIfFHYf0uslyOECI
+No principal matched.
+docs(lab10): add GitHub Codespaces as Task 2 fallback for Render
+c42ec18 Good "git" signature with ED25519 key SHA256:0cwLoNGahihJuXWFSCl5sAOX6EvXIfFHYf0uslyOECI
+No principal matched.
+docs(lab10): move Task 2 from Hugging Face Spaces to Render free tier
+9f41b7d Good "git" signature with ED25519 key SHA256:0cwLoNGahihJuXWFSCl5sAOX6EvXIfFHYf0uslyOECI
+No principal matched.
+docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
+alisaevdosenko@MacBook-Pro-Alisa DevOps-Intro %
+```
 
 ---
 
 ## Task 3 — GitHub Community
 
-To be completed.
+As part of the GitHub Community task, I starred the required repositories and followed the professor, teaching assistants, and classmates.
+
+GitHub Stars are useful in open-source communities because they help users bookmark interesting repositories and also provide a visible indication of community interest in a project. Following developers makes it easier to discover their projects and activity, which can support collaboration, knowledge sharing, and professional growth in team-based engineering environments.
 
 ---
 
