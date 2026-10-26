@@ -385,21 +385,3 @@ A possible cause alert would be “page when QuickNotes container CPU exceeds 90
 ### g) Quantitative alert-fatigue threshold
 
 If more than 10% of pages occur when there is no measurable user impact, the page is too noisy and must be tuned. “No measurable impact” means the error SLI and availability checks stayed within their objectives and no user-facing failure was confirmed during the page window. The team should review this monthly as `false or non-actionable pages / all pages`; for example, 3 non-actionable pages out of 20 is 15% and fails the threshold. Every page should also require a concrete human action; otherwise it should become a dashboard signal or ticket rather than a page.
-
----
-
-# Final verification checklist
-
-- Prometheus config and rule syntax: passed
-- Grafana dashboard JSON syntax: passed
-- Compose model validation: passed
-- QuickNotes container healthcheck: healthy
-- Prometheus target health: `up`
-- `up{job="quicknotes"}`: `1`
-- Grafana data source provisioning: passed
-- Grafana dashboard provisioning: passed
-- Four dashboard panels with real data: passed
-- Error-ratio alert entered `Firing`: passed
-- Runbook with meaning, ordered triage, mitigations, and post-incident steps: complete
-- Git commit: not performed
-- Git push: not performed
