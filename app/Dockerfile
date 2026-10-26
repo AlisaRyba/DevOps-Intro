@@ -3,7 +3,7 @@
 # ------------------------------------------------------------
 # Stage 1: build
 # ------------------------------------------------------------
-FROM golang:1.24-alpine AS builder
+FROM golang:1.27.3-alpine AS builder
 
 WORKDIR /src
 
@@ -49,5 +49,7 @@ COPY --from=builder --chown=65532:65532 /out/data /data
 USER nonroot:nonroot
 
 EXPOSE 8080
+
+HEALTHCHECK --interval=5s --timeout=3s --start-period=2s --retries=5 CMD ["/healthcheck"]
 
 ENTRYPOINT ["/quicknotes"]
