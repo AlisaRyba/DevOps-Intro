@@ -1,0 +1,73 @@
+Final Lab 10 checks on 2026-10-27.
+These checks issue no HTTP requests and trigger no deployment.
+Temporary Ruby validators cross-check saved evidence and relative Markdown links.
+ShellCheck integration was disabled because ShellCheck is not installed.
+
+Python helper tests
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts/lab10 -p 'test_*.py' -v
+Exit: 0
+test_digest_is_encoded_once (test_helpers.DeployTests.test_digest_is_encoded_once) ... ok
+test_error_does_not_reveal_hook (test_helpers.DeployTests.test_error_does_not_reveal_hook) ... ok
+test_invalid_destinations_rejected (test_helpers.DeployTests.test_invalid_destinations_rejected) ... ok
+test_redirects_disabled (test_helpers.DeployTests.test_redirects_disabled) ... ok
+test_replaces_previous_image_parameter (test_helpers.DeployTests.test_replaces_previous_image_parameter) ... ok
+test_success_means_accepted_not_ready (test_helpers.DeployTests.test_success_means_accepted_not_ready) ... ok
+test_unversioned_image_rejected (test_helpers.DeployTests.test_unversioned_image_rejected) ... ok
+test_curl_failure_not_counted (test_helpers.MeasurementTests.test_curl_failure_not_counted) ... ok
+test_gateway_page_not_counted_as_health (test_helpers.MeasurementTests.test_gateway_page_not_counted_as_health) ... ok
+test_percentile (test_helpers.MeasurementTests.test_percentile) ... ok
+test_successful_sample (test_helpers.MeasurementTests.test_successful_sample) ... ok
+test_url_without_secret (test_helpers.MeasurementTests.test_url_without_secret) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.018s
+
+OK
+
+Workflow linter
+Command: /private/tmp/quicknotes-lab10.U0rD0s/actionlint -shellcheck='' .github/workflows/release.yml
+Exit: 0
+(no diagnostic output)
+
+Workflow and document-link checks
+Command: ruby /private/tmp/quicknotes-lab10.U0rD0s/verify_lab10.rb /Users/alisaevdosenko/DevOps-Intro
+Exit: 0
+{
+  "status": "PASS",
+  "pinned_action_steps": 8,
+  "unique_action_dependencies": 6,
+  "document_links": 47,
+  "local_samples": 5
+}
+
+Three-cycle evidence cross-check
+Command: ruby /private/tmp/quicknotes-lab10.U0rD0s/verify_cloud_evidence.rb /Users/alisaevdosenko/DevOps-Intro
+Exit: 0
+{
+  "status": "PASS",
+  "release_run": 40484545201,
+  "warm_p50_seconds": 0.330455,
+  "independent_idle_cycles": 3,
+  "cold_seconds": [
+    12.805613,
+    14.896333,
+    13.72324
+  ],
+  "synthetic_probes_absent_after_wake": 3
+}
+
+Diff whitespace check
+Command: git diff --check
+Exit: 0
+(no diagnostic output)
+
+Final recheck after completing all report links and the working-tree inventory:
+2026-10-27 11:15 UTC
+Workflow/document validator: PASS, 8 SHA-pinned steps, 6 action dependencies, 48 document links.
+Saved cloud evidence validator: PASS, 5 warm samples, 3 independent idle/wake cycles.
+Cold seconds: 12.805613, 14.896333, 13.723240.
+All 23 evidence JSON files parsed successfully.
+No real deploy-hook URL or GitHub credential pattern found in intended documentation/evidence.
+git diff --check: exit 0.
+git status: feature/lab10, 4 modified documentation files, 36 new evidence files; nothing staged.
+No assistant commit/push, tag modification, suspension or deletion performed.

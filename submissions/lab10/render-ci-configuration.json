@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-27 09:54:48 UTC",
+  "repository": "AlisaRyba/DevOps-Intro",
+  "render_service_id": "srv-dbg6vh2jnfac73ff55s0",
+  "render_origin": "https://quicknotes-lab10-alisa.onrender.com",
+  "github_actions_repository_secret": {
+    "name": "RENDER_DEPLOY_HOOK_URL",
+    "present": true,
+    "value_recorded": false,
+    "ui_confirmation": "Repository secret added."
+  },
+  "github_actions_repository_variable": {
+    "name": "RENDER_DEPLOY_ENABLED",
+    "value": "true"
+  },
+  "consent": "Owner explicitly approved transferring the Render hook to this repository's GitHub Actions and enabling deployment.",
+  "verification_scope": "Configuration presence only; a new release-tag run is still required to prove a successful hook invocation and readiness.",
+  "next_release_tag": "v0.1.1"
+}

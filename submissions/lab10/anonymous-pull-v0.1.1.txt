@@ -1,0 +1,18 @@
+v0.1.1: Pulling from alisaryba/devops-intro/quicknotes
+44136fa355b3: Already exists
+eef393c3adb9: Pulling fs layer
+0e77edb3809b: Pulling fs layer
+8717a1b62366: Pulling fs layer
+f09b682b5088: Pulling fs layer
+922a7432d4ba: Download complete
+eef393c3adb9: Download complete
+f09b682b5088: Download complete
+0e77edb3809b: Download complete
+8717a1b62366: Download complete
+eef393c3adb9: Pull complete
+f09b682b5088: Pull complete
+0e77edb3809b: Pull complete
+8717a1b62366: Pull complete
+Digest: sha256:790cab51be256523b45b2248bd91a35ef5674c6cbcd1c56190577bb153699b0c
+Status: Downloaded newer image for ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.1
+ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.1

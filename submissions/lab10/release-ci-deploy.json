@@ -1,0 +1,47 @@
+{
+  "id": 40484545201,
+  "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201",
+  "event": "push",
+  "tag": "v0.1.1",
+  "head_sha": "766885bd0868f29ca45d7bfa1b03cd8834ad60e9",
+  "status": "completed",
+  "conclusion": "success",
+  "created_at": "2026-10-27T09:55:54Z",
+  "updated_at": "2026-10-27T10:01:51Z",
+  "jobs": [
+    {
+      "id": 122122937589,
+      "name": "Test before publishing",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-27T09:55:57Z",
+      "completed_at": "2026-10-27T09:56:53Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201/job/122122937589"
+    },
+    {
+      "id": 122123344951,
+      "name": "Publish multi-platform image",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-27T09:56:55Z",
+      "completed_at": "2026-10-27T10:01:41Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201/job/122123344951"
+    },
+    {
+      "id": 122125420910,
+      "name": "Deploy the published digest to Render",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-27T10:01:44Z",
+      "completed_at": "2026-10-27T10:01:50Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201/job/122125420910"
+    }
+  ],
+  "published_image": "ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.1",
+  "index_digest": "sha256:790cab51be256523b45b2248bd91a35ef5674c6cbcd1c56190577bb153699b0c",
+  "render_deploy_id": "dep-dbg7d3142hec73dqlndg",
+  "render_deploy_status": "Live",
+  "render_platform_manifest": "sha256:bab3e26f61e0ef2b2954526f0ce7020e56b2c637d6afc329265dbff760793fcf",
+  "hook_http_status": 200,
+  "post_deploy_health_http_status": 200
+}

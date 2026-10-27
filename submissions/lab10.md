@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-**Local preparation is complete; the cloud acceptance criteria are not complete yet.** The owner chose to perform the commit and push herself. No commit, tag, push, GHCR publication, Render service creation, deploy-hook invocation or Cloudflare tunnel was performed by the assistant.
+**The mandatory implementation and remote experiments for Tasks 1 and 2 are complete.** The owner committed and pushed `feature/lab10` and signed tags `v0.1.0` and `v0.1.1` at `766885bd0868f29ca45d7bfa1b03cd8834ad60e9`. No assistant commit or push was performed. All three genuine idle/wake cycles, public readiness and note-persistence observations are recorded below. The final evidence update still needs the owner's review, commit/push and PR submission.
 
 Prepared and checked locally on **2026-10-27**:
 
@@ -27,20 +27,20 @@ The GitHub HTML preview returned an older Hugging Face variant. The raw file mat
 
 | Required evidence | State |
 |---|---|
-| Workflow triggered by a release tag on origin | Pending owner push |
-| Public image at GHCR | Not published yet |
-| Anonymous pull and resolved digest | Pending publication and package visibility change |
-| Successful release-run URL | Not available yet |
+| Workflow triggered by a release tag on origin | Passed: `v0.1.0`, run `40480341684` |
+| Public image at GHCR | Passed: version and `latest` published |
+| Anonymous pull and resolved digest | Passed with a fresh Docker configuration; evidence below |
+| Successful release-run URL | [Bootstrap release run](https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684), success |
 | SHA-pinned actions and minimal permissions | Implemented and statically checked |
 | Design answers a–c | Below |
-| Public Render `/health` and `/notes` | Pending service creation |
-| Matching `PORT` / `ADDR`, health path, region | Documented; not yet applied in Render |
-| Tag-triggered Render redeployment | Implemented; pending hook secret and enable variable |
-| Warm p50 and three cold samples | Not measured in the cloud yet |
-| Note persistence across Render spin-down | Not observed yet |
-| Design answers d–f | Mechanisms explained below; observed result remains pending |
+| Public Render `/health` and `/notes` | Passed initially, after CI deployment and after all three wakes |
+| Matching `PORT` / `ADDR`, health path, region | Applied: 8080, `/health`, Frankfurt, Free |
+| Tag-triggered Render redeployment | Passed: v0.1.1 run 40484545201, all three jobs success; Render Live |
+| Warm p50 and three cold samples | Passed: warm p50 0.330455 s; cold 12.805613, 14.896333, 13.723240 s |
+| Note persistence across Render spin-down | Observed: all three cycles lost their distinctive synthetic note |
+| Design answers d–f | Answered below, with actual persistence evidence |
 
-This is an honest progress record, not a claim of the full 10 points. Remote evidence must be appended after publication and actual deployment.
+All mandatory technical acceptance checks have evidence. This is not a claim of an assigned grade: the owner still needs to publish the final evidence update and submit the PR for review. The optional bonus was not attempted.
 
 ## Task 1 — Release implementation
 
@@ -52,13 +52,13 @@ Jobs run in order:
 2. **publish**: Buildx builds the existing `app/Dockerfile` for AMD64 and ARM64 and pushes both the version and `latest`.
 3. **deploy**: once `RENDER_DEPLOY_ENABLED=true`, invoke the Render hook using the **published digest**, not a later lookup of mutable `latest`.
 
-Planned registry name:
+Published registry name:
 
 ```text
 ghcr.io/alisaryba/devops-intro/quicknotes
 ```
 
-This is the configured destination, **not evidence that the package currently exists**. The first intended tag is `v0.1.0`; it was absent locally, and the unauthenticated GitHub tag API returned 404 during preparation. Check again before creating it.
+The initial tag `v0.1.0` now exists on origin and triggered the successful run linked below. Do not recreate or move it. The package page already displayed **Public**, so no package-visibility setting was changed by the assistant.
 
 Workflow-wide permissions are empty. Test and deploy jobs receive `contents: read`; only publish receives `packages: write` as well. Checkout does not persist credentials. No PAT and no `id-token: write` are required for this GHCR use case.
 
@@ -78,6 +78,38 @@ Verified against the official repositories' tag refs on 2026-10-27:
 | `docker/login-action` | `v4.7.0` | `81c6f93d4bc991e510b342a00b419b3bb4efc5c6` |
 | `docker/build-push-action` | `v7.4.0` | `c3c9e263c25d99ce0380d002d59b67737d91b0dc` |
 | `actions/setup-go` | `v7.0.0` | `b7ad1dad31e06c5925ef5d2fc7ad053ef454303e` |
+
+## Actual GHCR release evidence
+
+The owner-pushed tag triggered [release run 40480341684](https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684) at source commit `766885bd0868f29ca45d7bfa1b03cd8834ad60e9`. Both **Test before publishing** and **Publish multi-platform image** concluded `success`; the deploy job was intentionally `skipped` because Render was not configured yet.
+
+Published version: `ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.0`.
+
+Published OCI index digest:
+
+```text
+sha256:487da8b14865453c32e13b1e1b2ef38583af55f929a867eb5d3c0ee01b27a336
+```
+
+An actual `docker pull` succeeded with a newly created, empty Docker configuration, without registry login. Its returned digest matches the release log. Some base layers were already cached by the local engine; this is a clean-credentials pull, not a new physical machine.
+
+The [manifest](lab10/manifest-v0.1.0.json) contains Linux AMD64 and ARM64 application manifests plus two provenance-attestation manifests marked `unknown/unknown`. Those attestation entries are not additional runnable architectures.
+
+Raw evidence: [release status and jobs](lab10/release-bootstrap.json), [anonymous pull output](lab10/anonymous-pull-v0.1.0.txt), and [public package](https://github.com/AlisaRyba/DevOps-Intro/pkgs/container/devops-intro%2Fquicknotes).
+
+## Verified CI-triggered deployment
+
+The owner pushed `v0.1.1` without moving `v0.1.0`. [Release run 40484545201](https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201) completed successfully, including the deploy job. The hook returned HTTP 200 and deployment ID `dep-dbg7d3142hec73dqlndg`; its URL/key are not recorded.
+
+The new published index is `sha256:790cab51be256523b45b2248bd91a35ef5674c6cbcd1c56190577bb153699b0c`. Render's event shows **Triggered via Deploy Hook**, the same full index digest and AMD64 manifest prefix `bab3e26`; its deploy page reports **Deploy succeeded | Live**. The actual log includes `2026/10/27 10:01:58 quicknotes listening on :8080 (notes loaded: 4)` and a live message at 13:02:05 GMT+3. The 13.0-second deploy duration is not an idle cold-start sample.
+
+An unauthenticated [post-CI health request](lab10/render-health-after-ci.txt) independently returned HTTP/2 200 and QuickNotes JSON after readiness. [Post-CI notes](lab10/render-notes-after-ci.json) contain only the four seed notes: the initial v0.1.0 probe was lost across redeployment, not yet a spin-down test.
+
+Five consecutive [final warm samples](lab10/warm.json) give p50 **0.330455 seconds**. Each request uses a fresh curl process, including DNS/connect/TLS. The sample is small and is not a latency SLO.
+
+Evidence: [release/jobs](lab10/release-ci-deploy.json), [CI hook and Render log excerpts](lab10/render-ci-deploy-log.txt), [anonymous v0.1.1 pull](lab10/anonymous-pull-v0.1.1.txt), [manifest](lab10/manifest-v0.1.1.json).
+
+The image source setting still names the initial tag v0.1.0. Render's hook override selected the new digest for this deployment without changing that default setting. Manual Deploy of the default image could therefore return to v0.1.0; subsequent CI releases again pass their explicit digest. The platform's auto-deploy-disabled banner does not mean the separate GitHub deploy-hook job was disabled.
 
 ## Local verification and evidence
 
@@ -165,22 +197,41 @@ This is least privilege: each job receives only the authority required for its f
 
 `packages: write` still permits package damage within its actual scope, so pinning actions and protecting release creation remain important. Narrow permissions reduce blast radius rather than making a malicious step harmless. See [GitHub token permissions](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token).
 
-## Task 2 — Planned Render deployment
+## Task 2 — Initial Render deployment
 
-Choose **Option A, Render**, using the already tested image instead of introducing a second source-build pipeline. The owner created her Render account interactively; no password or token was passed through the chat. No service has been provisioned yet.
+Used **Option A, Render**, with the published image instead of introducing a second source-build pipeline. The owner created her Render account interactively; no password or token was passed through the chat. After explicit confirmation of public exposure, the assistant created only the Free ($0/month) service, without entering a card or upgrading the workspace.
 
-Exact planned settings and public-check commands are in [cloud/render.md](../cloud/render.md). The required hook is stored as `RENDER_DEPLOY_HOOK_URL` in GitHub Actions Secrets, never in a tracked file.
+Public origin: https://quicknotes-lab10-alisa.onrender.com. Service ID: `srv-dbg6vh2jnfac73ff55s0`. Initial deploy: `dep-dbg6vhqjnfac73ff58n0`, reported Live by Render. The [actual deploy log](lab10/render-initial-deploy-log.txt) shows `quicknotes listening on :8080 (notes loaded: 4)` and the public URL. Render displayed a 10.7-second initial deploy; this is not an idle cold-start measurement.
 
-Evidence still to collect:
+An unauthenticated [verbose health request](lab10/render-health-initial.txt) verified the TLS certificate and returned HTTP/2 200 with `{"notes":4,"status":"ok"}`. [GET /notes](lab10/render-notes-initial.json) returned the four repository seed notes. No local data volume was uploaded.
 
-- The real service URL and verbose `curl` output for `/health`.
-- `/notes` response, first deploy log and matching listening-port line.
-- A release run with the deploy job enabled, followed by a ready public service.
-- Five consecutive warm requests and their p50.
-- Three separate idle periods of at least 20 minutes, platform spin-down evidence and one cold wake measurement after each.
-- A distinctive synthetic note before idle and its actual presence/absence after wake.
+Five consecutive successful requests to the initial release gave warm p50 **0.230013 seconds**. [Raw initial samples](lab10/warm-initial.json) include UTC timestamps and curl phase times. They include client DNS/connect/TLS and are not a server-only processing measurement.
 
-Do not poll the service while waiting for spin-down. Local container restarts and redeploys are not substitutes for the required idle/wake experiment.
+The applied settings and public-check commands are in [cloud/render.md](../cloud/render.md). After the owner's explicit approval, the existing deploy hook was transferred directly from its Render settings field into GitHub Actions repository Secret `RENDER_DEPLOY_HOOK_URL`. GitHub confirmed `Repository secret added.` The repository variable `RENDER_DEPLOY_ENABLED` was created and verified as `true`. The hook value was not printed, added to files, or included in screenshots. [Configuration evidence](lab10/render-ci-configuration.json) records names and status only, never the secret value. The actual successful v0.1.1 hook invocation is documented above.
+
+A synthetic initial probe was created at `2026-10-27T09:39:14.576608396Z`, returned ID 5; its [actual response](lab10/render-note-before-idle-initial.json) is saved. It disappeared across the subsequent redeployment. That initial probe is not used to claim a standalone idle persistence result.
+
+## Genuine idle/wake measurements
+
+All final measurements use the CI-deployed v0.1.1 digest. No manual redeploy or restart is used to create a cold sample. Each independent idle interval lasts at least 21 minutes, with no application requests from this experiment. Reading the Render dashboard is a control-plane operation, not an HTTP request to the public application.
+
+| Cycle | Last request completed, UTC | Shutdown log, UTC | Cold request started, UTC | Idle seconds | HTTP | Total seconds |
+|---|---|---|---|---:|---:|---:|
+| 1 | 10:03:57 | 10:18:57 | 10:27:25 | 1408 | 200 | 12.805613 |
+| 2 | 10:28:10 | 10:43:03 | 10:49:20 | 1270 | 200 | 14.896333 |
+| 3 | 10:49:57 | 11:04:44 | 11:11:09 | 1272 | 200 | 13.723240 |
+
+The first cold request returned `{"notes":4,"status":"ok"}`, not Render's intermediate loading page. The dashboard logs show instance `bgffq` shutting down at 10:18:57 and a new instance `6vnb8` starting at 10:27:32 with four loaded notes. The [cycle record](lab10/idle-cycle-1.json), [raw curl metadata](lab10/cold-1.json), [response headers](lab10/cold-1-headers.txt) and [body](lab10/cold-1-body.txt) preserve the actual result. TLS verification succeeded; curl did not retry or follow redirects.
+
+Immediately before the first idle interval, POST returned ID 5 for `Lab 10 v0.1.1 idle persistence probe` at `2026-10-27T10:03:57.238288146Z`. After wake, [GET /notes](lab10/notes-after-cold-1.json) returned only the four original seed notes. The [distinctive probe](lab10/note-before-idle.json) is absent. This is an observed loss across automatic spin-down/wake, independent of the earlier redeployment. ID alone is not the identity check: a fresh seed-backed process can reuse ID 5.
+
+The second cycle independently returned HTTP 200 and `{"notes":4,"status":"ok"}` after 14.896333 seconds. Render logs show `6vnb8` stopping at 10:43:03 and `lnz5s` starting at 10:49:26. Its [cycle record](lab10/idle-cycle-2.json), [curl metadata](lab10/cold-2.json), [headers](lab10/cold-2-headers.txt), [body](lab10/cold-2-body.txt), [note before idle](lab10/note-before-idle-2.json) and [notes after wake](lab10/notes-after-cold-2.json) confirm that the second distinctive probe was also lost.
+
+The third cycle returned HTTP 200 and the same valid health JSON after 13.723240 seconds. Render logs show `lnz5s` stopping at 11:04:44 and `5hprt` starting at 11:11:19. Its [cycle record](lab10/idle-cycle-3.json), [curl metadata](lab10/cold-3.json), [headers](lab10/cold-3-headers.txt), [body](lab10/cold-3-body.txt), [note before idle](lab10/note-before-idle-3.json) and [notes after wake](lab10/notes-after-cold-3.json) confirm the third probe was also lost.
+
+The [actual platform log excerpts](lab10/render-idle-wake-log.txt) cover all three shutdown/startup pairs. All table times are UTC on 2026-10-27; the dashboard displays UTC+3. The recorded last-request completion times for cycles 2 and 3 are deliberately taken after their POST response was collected, so they conservatively understate the quiet interval. These were three separate automatic spin-downs, not three requests during the same startup.
+
+Cold-request times include client DNS/connect/TLS and the wait for a ready application. No intermediate page, redirect, retry or failed response is counted as success. Three observations are enough for this assignment's demonstration, not a statistical availability or production-latency guarantee.
 
 ## Design answers d–f
 
@@ -188,7 +239,9 @@ Do not poll the service while waiting for spin-down. Local container restarts an
 
 Both can release application capacity when idle, then need capacity again when demand returns. Render documents free-service spin-down as a resource-saving feature, not a low-latency availability guarantee. Cloud Run is designed around request-driven autoscaling with configurable concurrency and minimum instances.
 
-This can lead to different wake behavior, but there is no universal fixed speed ratio: startup work, scheduling, image transfer, caches and application initialization all matter. The lab's actual latency comparison is still unmeasured. See [Render's free-service behavior](https://render.com/docs/free) and [Cloud Run autoscaling](https://docs.cloud.google.com/run/docs/about-instance-autoscaling).
+Render's free tier prioritizes resource savings rather than keeping an always-ready instance. Waking it can involve scheduling capacity, preparing the container filesystem and starting the application before proxying a waiting request. Cloud Run is a managed, request-driven execution platform whose autoscaling and startup path target serving traffic; minimum instances can trade idle cost for less startup delay. Neither model guarantees that every cold start has a fixed duration.
+
+Our three Render cold requests took 12.805613, 14.896333 and 13.723240 seconds versus the five-request warm p50 of 0.330455 seconds. This demonstrates the idle penalty in this experiment, not a measured Render-versus-Cloud-Run benchmark: Cloud Run was not deployed. Startup work, scheduling, image transfer and caches can change later results. See [Render's free-service behavior](https://render.com/docs/free) and [Cloud Run autoscaling](https://docs.cloud.google.com/run/docs/about-instance-autoscaling).
 
 ### e) PORT versus EXPOSE
 
@@ -196,7 +249,7 @@ This can lead to different wake behavior, but there is no universal fixed speed 
 
 QuickNotes reads `ADDR`, not `PORT`. Both are therefore set explicitly: `PORT=8080` and `ADDR=:8080`. The image's existing local healthcheck also expects 8080. This avoids a port-mismatch detection/restart cycle without editing application code.
 
-The assignment describes an extra restart delay; it is not an observed timing in this submission. Actual port log lines remain pending. See [Render port binding](https://render.com/docs/web-services#port-binding).
+The assignment describes an extra restart delay; it is not an observed timing in this submission. The initial actual log shows `quicknotes listening on :8080`; no port-mismatch restart appeared in the observed first-deploy log. See [Render port binding](https://render.com/docs/web-services#port-binding).
 
 ### f) Existing image versus a Render source build, and note persistence
 
@@ -204,7 +257,7 @@ Using the GHCR artifact separates build from deployment and permits selecting th
 
 The architecture must match, and a new multi-platform build is not automatically identical to the single-platform ARM64 image scanned in Lab 9. The local ARM64 config output retained the patched app, but the AMD64 artifact and future CI digest need their own supply-chain/scanning evidence if that is required.
 
-**Persistence result is pending.** QuickNotes writes a JSON file, not an external database. Render's free filesystem is ephemeral, so an unbacked new note is expected to be lost when the instance's filesystem is replaced, including the documented idle lifecycle. This is a prediction from the storage model, not an invented test result. The actual before/after ID and response must be recorded after the required experiment.
+**Observed result: all three independent idle/wake cycles lost their synthetic note.** QuickNotes writes `/data/notes.json`, not an external database. Its image makes that directory writable, but a directory inside the container is not automatically persistent storage. The free service has no persistent disk; when Render recreated the runtime after idle, QuickNotes loaded the four bundled seed notes instead of the old writable file. The original source image and public URL staying the same did not preserve the previous instance's writes. Durable notes would require an external database or supported persistent storage, with backup and recovery designed separately.
 
 ## Bonus
 
@@ -212,4 +265,76 @@ Not attempted. No Cloudflare Tunnel or public exposure of the existing local not
 
 ## Next handoff
 
-The owner will review, commit, push `feature/lab10`, and push a fresh stable release tag. After the image appears in GHCR, make the package public and continue Render setup. Do not submit this report as fully completed until the pending acceptance evidence is filled in.
+The owner has already pushed both `v0.1.0` and `v0.1.1`; publication, CI deployment and public readiness succeeded. No more release tag is needed for this implementation. Do not move either existing tag. The owner retains control of the final evidence-only commit and push, followed by the PR from `feature/lab10` to the course repository's `main` and the Moodle submission.
+
+The existing Free Render service is retained for review, as permitted by the assignment. It may be asleep when opened; the next request wakes it. `RENDER_DEPLOY_ENABLED` remains `true`. No paid resource, payment card, persistent disk, Cloudflare tunnel or additional cloud service was added. Suspension/deletion and disabling future deploys are documented in [teardown guidance](../cloud/teardown.md), not performed automatically.
+
+The final after-wake `/notes` response contains only the four synthetic seed notes. Existing local Lab 8/9 containers and data were left alone. Python bytecode remains locally ignored; no generated build cache or temporary executable is included in the intended commit, and `.gitignore` was not changed.
+
+
+## Final verification and files left for review
+
+All 12 offline helper tests passed again. Actionlint returned exit 0 (ShellCheck is not installed), relative documentation links resolved, and the saved-evidence cross-check verified five warm samples, all three independent 21+ minute idle intervals, successful HTTP/TLS/QuickNotes responses and the absence of each distinctive probe after wake. `git diff --check` returned exit 0. [Actual final check output](lab10/final-checks.txt) is retained.
+
+A SHA-256 comparison against the 109 tracked files recorded after the owner's push found changes only in the four documentation files below. The release workflow, helper source, application, previous labs and `.gitignore` remain unchanged. Nothing is staged. HEAD remains `766885bd0868f29ca45d7bfa1b03cd8834ad60e9`; both existing release tags still point there. Unrelated running Docker containers were not stopped.
+
+Final working-tree file list (`M` = modified documentation, `??` = new evidence intended for the final commit):
+
+```text
+M  cloud/render.md
+M  cloud/teardown.md
+M  submissions/lab10.md
+M  submissions/lab10/README.md
+?? submissions/lab10/anonymous-pull-v0.1.0.txt
+?? submissions/lab10/anonymous-pull-v0.1.1.txt
+?? submissions/lab10/cold-1-body.txt
+?? submissions/lab10/cold-1-headers.txt
+?? submissions/lab10/cold-1.json
+?? submissions/lab10/cold-2-body.txt
+?? submissions/lab10/cold-2-headers.txt
+?? submissions/lab10/cold-2.json
+?? submissions/lab10/cold-3-body.txt
+?? submissions/lab10/cold-3-headers.txt
+?? submissions/lab10/cold-3.json
+?? submissions/lab10/final-checks.txt
+?? submissions/lab10/idle-cycle-1.json
+?? submissions/lab10/idle-cycle-2.json
+?? submissions/lab10/idle-cycle-3.json
+?? submissions/lab10/manifest-v0.1.0.json
+?? submissions/lab10/manifest-v0.1.1.json
+?? submissions/lab10/note-before-idle-2.json
+?? submissions/lab10/note-before-idle-3.json
+?? submissions/lab10/note-before-idle.json
+?? submissions/lab10/notes-after-cold-1.json
+?? submissions/lab10/notes-after-cold-2.json
+?? submissions/lab10/notes-after-cold-3.json
+?? submissions/lab10/release-bootstrap.json
+?? submissions/lab10/release-ci-deploy.json
+?? submissions/lab10/render-ci-configuration.json
+?? submissions/lab10/render-ci-deploy-log.txt
+?? submissions/lab10/render-health-after-ci.txt
+?? submissions/lab10/render-health-initial.txt
+?? submissions/lab10/render-idle-wake-log.txt
+?? submissions/lab10/render-initial-deploy-log.txt
+?? submissions/lab10/render-note-before-idle-initial.json
+?? submissions/lab10/render-notes-after-ci.json
+?? submissions/lab10/render-notes-initial.json
+?? submissions/lab10/warm-initial.json
+?? submissions/lab10/warm.json
+```
+
+Review and publish manually from the repository root; the following commands have **not** been executed by the assistant:
+
+```bash
+git diff --check
+git diff -- cloud/render.md cloud/teardown.md submissions/lab10.md submissions/lab10/README.md
+git status --short
+# Also inspect the new evidence files: unstaged git diff does not show their contents.
+git add cloud/render.md cloud/teardown.md submissions/lab10.md submissions/lab10/
+git diff --cached --stat
+git diff --cached
+git commit -m "Lab 10: record Render deployment and cold-start evidence"
+git push origin feature/lab10
+```
+
+Then create the course PR and submit its URL via Moodle. No extra tag, force push, package deletion or secret disclosure is needed.

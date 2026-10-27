@@ -1,0 +1,17 @@
+HTTP/2 200 
+date: Tue, 27 Oct 2026 10:49:34 GMT
+content-type: application/json
+cache-control: no-store
+content-security-policy: default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
+cross-origin-resource-policy: same-origin
+referrer-policy: no-referrer
+rndr-id: dbce8d80-b854-4dc0
+server: cloudflare
+vary: Accept-Encoding
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-render-origin-server: Render
+cf-cache-status: DYNAMIC
+cf-ray: a5112234a9858850-AMS
+alt-svc: h3=":443"; ma=86400
+

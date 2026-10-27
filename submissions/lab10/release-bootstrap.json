@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-10-27 09:30:39 UTC",
+  "id": 40480341684,
+  "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684",
+  "event": "push",
+  "head_branch": "v0.1.0",
+  "head_sha": "766885bd0868f29ca45d7bfa1b03cd8834ad60e9",
+  "status": "completed",
+  "conclusion": "success",
+  "created_at": "2026-10-27T09:22:56Z",
+  "updated_at": "2026-10-27T09:29:14Z",
+  "jobs": [
+    {
+      "id": 122108763948,
+      "name": "Test before publishing",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-27T09:22:59Z",
+      "completed_at": "2026-10-27T09:23:49Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684/job/122108763948"
+    },
+    {
+      "id": 122109132334,
+      "name": "Publish multi-platform image",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-27T09:23:51Z",
+      "completed_at": "2026-10-27T09:29:13Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684/job/122109132334"
+    },
+    {
+      "id": 122111454143,
+      "name": "Deploy the published digest to Render",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-27T09:29:14Z",
+      "completed_at": "2026-10-27T09:29:13Z",
+      "html_url": "https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40480341684/job/122111454143"
+    }
+  ],
+  "image": "ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.0",
+  "index_digest": "sha256:487da8b14865453c32e13b1e1b2ef38583af55f929a867eb5d3c0ee01b27a336",
+  "scope": "Bootstrap publication; Render deploy job intentionally skipped until the service and secret exist."
+}

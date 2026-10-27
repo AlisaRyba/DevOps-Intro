@@ -1,0 +1,61 @@
+{
+  "base_url": "https://quicknotes-lab10-alisa.onrender.com",
+  "label": "render-warm-v0.1.1",
+  "sample_count": 5,
+  "samples": [
+    {
+      "started_at_utc": "2026-10-27T10:03:40.789169+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.327244,
+      "time_namelookup_seconds": 0.003057,
+      "time_connect_seconds": 0.061364,
+      "time_appconnect_seconds": 0.206293,
+      "time_starttransfer_seconds": 0.325002,
+      "remote_ip": "216.24.57.18"
+    },
+    {
+      "started_at_utc": "2026-10-27T10:03:41.126542+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.832296,
+      "time_namelookup_seconds": 0.004783,
+      "time_connect_seconds": 0.064151,
+      "time_appconnect_seconds": 0.378119,
+      "time_starttransfer_seconds": 0.508757,
+      "remote_ip": "216.24.57.16"
+    },
+    {
+      "started_at_utc": "2026-10-27T10:03:41.976068+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.625505,
+      "time_namelookup_seconds": 0.003803,
+      "time_connect_seconds": 0.062321,
+      "time_appconnect_seconds": 0.129899,
+      "time_starttransfer_seconds": 0.300775,
+      "remote_ip": "216.24.57.16"
+    },
+    {
+      "started_at_utc": "2026-10-27T10:03:42.614988+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.330455,
+      "time_namelookup_seconds": 0.004661,
+      "time_connect_seconds": 0.06506,
+      "time_appconnect_seconds": 0.212389,
+      "time_starttransfer_seconds": 0.328524,
+      "remote_ip": "216.24.57.16"
+    },
+    {
+      "started_at_utc": "2026-10-27T10:03:42.963512+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.241881,
+      "time_namelookup_seconds": 0.005265,
+      "time_connect_seconds": 0.06366,
+      "time_appconnect_seconds": 0.13926,
+      "time_starttransfer_seconds": 0.241773,
+      "remote_ip": "216.24.57.16"
+    }
+  ],
+  "p50_seconds": 0.330455,
+  "p95_seconds": 0.7909378,
+  "percentile_method": "linear interpolation of ordered successful samples",
+  "scope": "fresh curl process per request, including client DNS/connect/TLS"
+}

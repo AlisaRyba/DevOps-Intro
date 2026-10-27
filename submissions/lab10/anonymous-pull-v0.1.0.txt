@@ -1,0 +1,26 @@
+Anonymous GHCR pull, 2026-10-27
+Command:
+docker --config /private/tmp/quicknotes-lab10-anon.YkF1mY --host unix:///Users/alisaevdosenko/.docker/run/docker.sock pull ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.0
+
+The temporary Docker configuration was newly created and had no credentials.
+The engine already contained shared base layers; this is not a new physical machine.
+
+v0.1.0: Pulling from alisaryba/devops-intro/quicknotes
+44136fa355b3: Already exists
+c6ac925d1c08: Pulling fs layer
+a21c34c3b4d4: Pulling fs layer
+0f1f4c560e91: Pulling fs layer
+fcb787fc665d: Pulling fs layer
+6c9ba9ad0117: Download complete
+fcb787fc665d: Download complete
+a21c34c3b4d4: Download complete
+c6ac925d1c08: Download complete
+c6ac925d1c08: Pull complete
+0f1f4c560e91: Download complete
+fcb787fc665d: Pull complete
+a21c34c3b4d4: Pull complete
+0f1f4c560e91: Pull complete
+Digest: sha256:487da8b14865453c32e13b1e1b2ef38583af55f929a867eb5d3c0ee01b27a336
+Status: Downloaded newer image for ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.0
+ghcr.io/alisaryba/devops-intro/quicknotes:v0.1.0
+Exit code: 0

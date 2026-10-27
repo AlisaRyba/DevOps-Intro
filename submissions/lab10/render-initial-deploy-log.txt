@@ -1,0 +1,17 @@
+Render initial deployment
+Service: srv-dbg6vh2jnfac73ff55s0
+Deploy: dep-dbg6vhqjnfac73ff58n0
+Image tag: v0.1.0
+Platform manifest source displayed by Render: ede3460
+Status: Deploy succeeded | Live
+Duration displayed: 10.7 seconds
+Region: Frankfurt (EU Central)
+Plan: Free ($0/month)
+Health check: /health
+Configuration: PORT=8080 ADDR=:8080 DATA_PATH=/data/notes.json SEED_PATH=/seed.json
+
+2026-10-27 12:32:58 GMT+3 ==> Starting service...
+2026-10-27 12:32:58 GMT+3 ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-10-27 12:33:03 GMT+3 [zjjq6] 2026/10/27 09:33:03 quicknotes listening on :8080 (notes loaded: 4)
+2026-10-27 12:33:10 GMT+3 ==> Your service is live
+2026-10-27 12:33:10 GMT+3 ==> Available at your primary URL https://quicknotes-lab10-alisa.onrender.com

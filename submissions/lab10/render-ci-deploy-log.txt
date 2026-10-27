@@ -1,0 +1,24 @@
+CI deploy evidence
+Job: https://github.com/AlisaRyba/DevOps-Intro/actions/runs/40484545201/job/122125420910
+Step: Trigger Render with the exact published artifact
+Result: success
+Visible output:
+Render accepted the deploy request (HTTP 200); this is not a readiness check.
+Deploy ID: dep-dbg7d3142hec73dqlndg
+
+Render deploy:
+https://dashboard.render.com/web/srv-dbg6vh2jnfac73ff55s0/deploys/dep-dbg7d3142hec73dqlndg
+Image: ghcr.io/alisaryba/devops-intro/quicknotes@sha256:790cab51be256523b45b2248bd91a35ef5674c6cbcd1c56190577bb153699b0c
+Source AMD64 platform manifest prefix: bab3e26
+Trigger: Deploy Hook
+Status: Deploy succeeded | Live
+Duration displayed by Render: 13.0 seconds (deployment, not idle cold start)
+Time zone of UI log labels: Europe/Moscow, GMT+3
+2026-10-27 13:01:52 ==> Starting service...
+2026-10-27 13:01:52 ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-10-27 13:01:58 [bgffq] 2026/10/27 10:01:58 quicknotes listening on :8080 (notes loaded: 4)
+2026-10-27 13:02:05 ==> Your service is live
+2026-10-27 13:02:05 ==> Available at your primary URL https://quicknotes-lab10-alisa.onrender.com
+
+Public health verified separately after readiness; see render-health-after-ci.txt.
+No deploy hook URL or key is recorded.
