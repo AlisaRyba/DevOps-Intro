@@ -1,0 +1,75 @@
+Lab 10 — actual local checks, 2026-10-27
+No remote publication or cloud latency evidence is claimed.
+
+Commands:
+  docker build --platform linux/arm64 --tag quicknotes:lab10-arm64 app
+  docker build --platform linux/amd64 --tag quicknotes:lab10-amd64 app
+Both commands used temporary BUILDX_CONFIG and the desktop-linux builder.
+
+Image inspection:
+[quicknotes:lab10-arm64] os=linux arch=arm64 user=nonroot:nonroot id=sha256:0293a572f1ca78b5d0352804a9986764a6e03f84145636737aa6645f3b6d4d69
+[quicknotes:lab10-amd64] os=linux arch=amd64 user=nonroot:nonroot id=sha256:a52738c390deeaf587ac6a808649f0fea38c83a13ec3556eb0ab17ceb5304af6
+
+Container health:
+/quicknotes-lab10-arm64 health=healthy label=10
+/quicknotes-lab10-amd64 health=healthy label=10
+
+AMD64 application log:
+2026/10/27 09:16:12 quicknotes listening on :8080 (notes loaded: 4)
+
+Go vet and race tests:
+  docker run --rm --platform linux/arm64
+    --mount type=bind,src=/Users/alisaevdosenko/DevOps-Intro/app,dst=/src,readonly
+    --workdir /src --env GOCACHE=/tmp/go-build
+    golang:1.27.3-alpine sh -ec
+    'apk add --no-cache gcc musl-dev; go vet ./...; go test -race -count=1 ./...'
+Exit: 0
+ok  	quicknotes	1.021s
+?   	quicknotes/cmd/healthcheck	[no test files]
+
+Actionlint:
+  actionlint -shellcheck='' .github/workflows/release.yml
+Exit: 0, no diagnostics.
+Version: 1.7.12, darwin/arm64.
+Official archive SHA256 verified:
+aba9ced2dee8d27fecca3dc7feb1a7f9a52caefa1eb46f3271ea66b6e0e6953f
+
+Offline Python tests:
+  python3 -m unittest discover -s scripts/lab10 -p 'test_*.py' -v
+12 tests passed. No Render API call is made by those tests.
+
+Actual HTTP checks:
+$ curl --fail --silent --show-error --max-time 10 --write-out '\nstatus=%{http_code}\n' http://127.0.0.1:18090/health
+Exit: 0
+{"notes":4,"status":"ok"}
+
+status=200
+
+$ curl --fail --silent --show-error --max-time 10 --write-out '\nstatus=%{http_code}\n' http://127.0.0.1:18091/health
+Exit: 0
+{"notes":4,"status":"ok"}
+
+status=200
+
+$ curl --fail --silent --show-error --max-time 10 --write-out '\nstatus=%{http_code}\n' http://127.0.0.1:18091/notes
+Exit: 0
+[{"id":1,"title":"Welcome to QuickNotes","body":"This is the project you'll containerize, deploy, monitor, and harden across all 10 labs.","created_at":"2026-01-15T10:00:00Z"},{"id":2,"title":"Read app/main.go first","body":"Start by understanding the entry point — env vars, signal handling, graceful shutdown.","created_at":"2026-01-15T10:05:00Z"},{"id":3,"title":"DevOps mantra","body":"If it hurts, do it more often.","created_at":"2026-01-15T10:10:00Z"},{"id":4,"title":"Endpoint cheat-sheet","body":"GET /notes  GET /notes/{id}  POST /notes  DELETE /notes/{id}  GET /health  GET /metrics","created_at":"2026-01-15T10:15:00Z"}]
+
+status=200
+
+$ curl --fail --silent --show-error --max-time 10 --header 'Content-Type: application/json' --data '{"title":"Lab 10 disposable smoke test","body":"Synthetic local evidence only"}' --write-out '\nstatus=%{http_code}\n' http://127.0.0.1:18090/notes
+Exit: 0
+{"id":5,"title":"Lab 10 disposable smoke test","body":"Synthetic local evidence only","created_at":"2026-10-27T09:16:12.860056967Z"}
+
+status=201
+
+DELETE of only the just-created synthetic note, ID 5:
+  curl --request DELETE http://127.0.0.1:18090/notes/5
+HTTP 204, exit 0.
+
+Measurement helper:
+  python3 scripts/lab10/measure.py http://127.0.0.1:18090
+    --count 5 --label local-arm64-not-cloud
+    --output submissions/lab10/latency-local-arm64.json
+All five responses: HTTP 200 and status=ok.
+These loopback timings are not Render warm/cold measurements.

@@ -1,0 +1,61 @@
+{
+  "base_url": "http://127.0.0.1:18090",
+  "label": "local-arm64-not-cloud",
+  "sample_count": 5,
+  "samples": [
+    {
+      "started_at_utc": "2026-10-27T09:16:13.045893+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.00204,
+      "time_namelookup_seconds": 4.8e-05,
+      "time_connect_seconds": 0.000204,
+      "time_appconnect_seconds": 0.0,
+      "time_starttransfer_seconds": 0.002018,
+      "remote_ip": "127.0.0.1"
+    },
+    {
+      "started_at_utc": "2026-10-27T09:16:13.054323+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.001016,
+      "time_namelookup_seconds": 5e-05,
+      "time_connect_seconds": 0.000155,
+      "time_appconnect_seconds": 0.0,
+      "time_starttransfer_seconds": 0.001009,
+      "remote_ip": "127.0.0.1"
+    },
+    {
+      "started_at_utc": "2026-10-27T09:16:13.060465+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.001137,
+      "time_namelookup_seconds": 5.5e-05,
+      "time_connect_seconds": 0.00018,
+      "time_appconnect_seconds": 0.0,
+      "time_starttransfer_seconds": 0.001111,
+      "remote_ip": "127.0.0.1"
+    },
+    {
+      "started_at_utc": "2026-10-27T09:16:13.067647+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.001632,
+      "time_namelookup_seconds": 5.1e-05,
+      "time_connect_seconds": 0.000171,
+      "time_appconnect_seconds": 0.0,
+      "time_starttransfer_seconds": 0.001611,
+      "remote_ip": "127.0.0.1"
+    },
+    {
+      "started_at_utc": "2026-10-27T09:16:13.075217+00:00",
+      "http_code": 200,
+      "time_total_seconds": 0.000848,
+      "time_namelookup_seconds": 4.7e-05,
+      "time_connect_seconds": 0.000162,
+      "time_appconnect_seconds": 0.0,
+      "time_starttransfer_seconds": 0.000841,
+      "remote_ip": "127.0.0.1"
+    }
+  ],
+  "p50_seconds": 0.001137,
+  "p95_seconds": 0.0019584,
+  "percentile_method": "linear interpolation of ordered successful samples",
+  "scope": "fresh curl process per request, including client DNS/connect/TLS"
+}
